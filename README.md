@@ -30,17 +30,21 @@ docker run \
     -v $HOME/input:/input \
     -v $HOME/output:/output \
     erikdevries/timelapse \
-    Xiaomi
-    1
+    -f Xiaomi
+    -d 1
+    -f mp4
+    -r 1080
 ```
 
 In the above command a couple of things happen:
 * `--rm` means the container is removed after it has run (otherwise each docker run will create, and keep a container)
-* Mount a given `input` folder (e.g. /volume1/surveillance/@Snapshot)
-* Mount a given `output` folder (where the create mp4 is stored)
-* `timelapse` is the name of the image
-* `Xiaomi` is the prefix for the filenames used to create the timelapse
-* `1` tells the application to create a timelapse with files from 1 day ago (this argument is optional, by default the current date is used, this is an number, so providing 14 means, create a timelapse with files from 2 weeks ago)
+* `-v [input]` mount a given `input` folder (e.g. /volume1/surveillance/@Snapshot)
+* `-v [output]` mount a given `output` folder (where the create timelapse is stored)
+* `erikdevries/timelapse` is the name of the image
+* `-p Xiaomi` is the **prefix** for the filenames used to create the timelapse
+* `-d 1` tells the application to create a timelapse with files from 1 **day** ago (optional, by default the current date is used, this is a number, so providing 14 means, create a timelapse with files from 2 weeks ago)
+* `-f mp4` tells the application to output the timelapse in MP4 **format** (optional, mp4 by default, gif is the other option)
+* `-r 1080` tell the application to **resize** the output to the given video width (optional, 720 by default, aspect ratio is preserved, for gif use something like 320 to keep the size down)
 
 This Docker image assumes the following files exist: /input/[prefix]-[currentdate]-*.jpg
 
@@ -56,7 +60,7 @@ E.g. When prefix "Xiaomi" is provided, and the current year is 2018, month is ma
     * `Run command` -> See the command below as an example
 
 ``
-docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Video/Timelapse:/output erikdevries/timelapse Xiaomi 1
+docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Video/Timelapse:/output erikdevries/timelapse -p Xiaomi -d 1
 ``
 
 * Finally check that the timelapse is actually created (you can manually execute the created task)
@@ -68,6 +72,6 @@ If you like to create timelapses for a range of X days in the past, you can use 
 ```
 #!/bin/bash
 for i in {1..10} do
-    docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Video/Timelapse:/output erikdevries/timelapse Xiaomi $i
+    docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Video/Timelapse:/output erikdevries/timelapse -p Xiaomi -d $i
 done
 ```
