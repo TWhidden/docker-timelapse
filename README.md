@@ -30,7 +30,7 @@ docker run \
     -v $HOME/input:/input \
     -v $HOME/output:/output \
     erikdevries/timelapse \
-    -f Xiaomi
+    -p Xiaomi
     -d 1
     -f mp4
     -r 1080
