@@ -26,18 +26,28 @@ Use e.g. the Synology Cron to run this container at any prefered moment.
 
 ```
 docker run \
+    --rm
     -v $HOME/input:/input \
     -v $HOME/output:/output \
-    timelapse \
+    erikdevries/timelapse \
     Xiaomi
+    1
 ```
 
 In the above command a couple of things happen:
+* `--rm` means the container is removed after it has run (otherwise each docker run will create, and keep a container)
 * Mount a given `input` folder (e.g. /volume1/surveillance/@Snapshot)
 * Mount a given `output` folder (where the create mp4 is stored)
 * `timelapse` is the name of the image
 * `Xiaomi` is the prefix for the filenames used to create the timelapse
+* `1` tells the application to create a timelapse with files from 1 day ago (this argument is optional, by default the current date is used, this is an number, so providing 14 means, create a timelapse with files from 2 weeks ago)
 
 This Docker image assumes the following files exist: /input/[prefix]-[currentdate]-*.jpg
 
 E.g. When prefix "Xiaomi" is provided, and the current year is 2018, month is march, day is 23, the following files should exist: /input/Xiaomi-20180323-[numbers].jpg
+
+## Setup cronjob on Synology
+
+``
+sudo docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Stuff/Timelapse:/output erikdevries/timelapse Xiaomi 1
+``
