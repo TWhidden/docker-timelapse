@@ -60,3 +60,14 @@ docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Video/Time
 ``
 
 * Finally check that the timelapse is actually created (you can manually execute the created task)
+
+## Additional tips
+
+If you like to create timelapses for a range of X days in the past, you can use a simple bash script like the following. This example executes the command with 1 to 10 days in the past (so this results in several timelapses).
+
+```
+#!/bin/bash
+for i in {1..10} do
+    docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Video/Timelapse:/output erikdevries/timelapse Xiaomi $i
+done
+```
