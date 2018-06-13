@@ -48,6 +48,15 @@ E.g. When prefix "Xiaomi" is provided, and the current year is 2018, month is ma
 
 ## Setup cronjob on Synology
 
+* Open `Task Scheduler`
+* Create a new task
+    * `Task` -> Create Timelapse
+    * `User` -> root (not prefered, but by default Synology does not allow other users to run Docker)
+    * `Schedule` -> I use 00:05 to create a timelapse from the entire day before
+    * `Run command` -> See the command below as an example
+
 ``
-sudo docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Stuff/Timelapse:/output erikdevries/timelapse Xiaomi 1
+docker run --rm -v /volume1/surveillance/@Snapshot:/input -v /volume1/Video/Timelapse:/output erikdevries/timelapse Xiaomi 1
 ``
+
+* Finally check that the timelapse is actually created (you can manually execute the created task)
