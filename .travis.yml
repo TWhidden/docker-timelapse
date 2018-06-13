@@ -1,0 +1,26 @@
+sudo: false
+dist: trusty
+
+services:
+- docker
+
+language: bash
+
+branches:
+  only:
+  - master
+
+script:
+  # Build X86 docker image
+  - docker build -t erikdevries/timelapse .
+
+after_success:
+# push image
+- >
+  if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+
+    docker tag erikdevries/timelapse erikdevries/timelapse:latest
+    docker tag erikdevries/timelapse erikdevries/timelapse:$TRAVIS_BUILD_NUMBER
+    docker push erikdevries/timelapse
+  fi
