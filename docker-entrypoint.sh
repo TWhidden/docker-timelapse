@@ -3,7 +3,7 @@ set -e
 
 DAYS_BACK=0
 FORMAT="mp4"
-RESOLUTION=720
+RESOLUTION=1280
 
 while getopts ":p:d:f:r:" opt; do
   case $opt in
