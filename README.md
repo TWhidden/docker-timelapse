@@ -43,7 +43,7 @@ In the above command a couple of things happen:
 * `-v [output]` mount a given `output` folder (where the create timelapse is stored)
 * `-v /etc/localtime:/etc/localtime:ro` to make sure the time inside the Docker container is the same as on the host system
 * `erikdevries/timelapse` is the name of the image
-* `-p Xiaomi` is the **prefix** for the filenames used to create the timelapse
+* `-p Xiaomi` is the **prefix** for the filenames used to create the timelapse (when prefix contains spaces put quotes around the name, e.g. "Foscam FI9831P")
 * `-d 1` tells the application to create a timelapse with files from 1 **day** ago (optional, by default the current date is used, this is a number, so providing 14 means, create a timelapse with files from 2 weeks ago)
 * `-f mp4` tells the application to output the timelapse in MP4 **format** (optional, mp4 by default, gif is the other option)
 * `-r 1920` tell the application to **resize** the output to the given video width (optional, 1280 by default, aspect ratio is preserved, for gif use something like 320 to keep the size down)
