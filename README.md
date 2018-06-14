@@ -1,7 +1,12 @@
 # Timelapse creator for Synology Surveillance Station
 
 ## Introduction
-I set Surveillance Station to create a snaphot every 2 minutes. These snapshots are used by this Docker image to create a timelapse for the current day. So when you run this command each day at e.g. 23:59 you get a timelapse for the entire day.
+
+I use Synology Surveillance Station with a couple of IP cameras. Surveillance Station is configured to create a snaphot every 2 minutes on each of these cameras. These snapshots are used by this Docker image to create a timelapse when the day is over.
+
+The fun thing is this way I have a (around 30 second long in my setup) timelapse of each day in the past. So what weather was it 3 weeks ago? Or just for fun :)
+
+## Set-up Synology to create snapshots
 
 To set-up Surveillance Station to automatically create snapshots, following these steps;
 * Open `Action Rule`
@@ -20,9 +25,9 @@ To set-up Surveillance Station to automatically create snapshots, following thes
 * Configure the schedule as desired
 * Check `Snapshot` to see the snapshots are actually created
 
-## How to use
+## How to use this container
 
-Use e.g. the Synology Cron to run this container at any prefered moment.
+Use e.g. the Synology Cron (see next section) to run this container at any prefered moment.
 
 ```
 docker run \
@@ -40,13 +45,13 @@ docker run \
 In the above command a couple of things happen:
 * `--rm` means the container is removed after it has run (otherwise each docker run will create, and keep a container)
 * `-v [input]` mount a given `input` folder (e.g. /volume1/surveillance/@Snapshot)
-* `-v [output]` mount a given `output` folder (where the create timelapse is stored)
+* `-v [output]` mount a given `output` folder (where the created timelapse is stored)
 * `-v /etc/localtime:/etc/localtime:ro` to make sure the time inside the Docker container is the same as on the host system
-* `erikdevries/timelapse` is the name of the image
+* `erikdevries/timelapse` is the name of the image (on Docker Hub, see https://hub.docker.com/r/erikdevries/timelapse/)
 * `-p Xiaomi` is the **prefix** for the filenames used to create the timelapse (when prefix contains spaces put quotes around the name, e.g. "Foscam FI9831P")
 * `-d 1` tells the application to create a timelapse with files from 1 **day** ago (optional, by default the current date is used, this is a number, so providing 14 means, create a timelapse with files from 2 weeks ago)
-* `-f mp4` tells the application to output the timelapse in MP4 **format** (optional, mp4 by default, gif is the other option)
-* `-r 1920` tell the application to **resize** the output to the given video width (optional, 1280 by default, aspect ratio is preserved, for gif use something like 320 to keep the size down)
+* `-f mp4` tells the application to output the timelapse in MP4 **format** (optional, mp4 by default, gif is the other option, which will output a optimized animated gif)
+* `-r 1920` tell the application to **resize** the output to the given width (optional, 1280 by default, aspect ratio is preserved, for gif use something like 320 to keep the filesize down)
 
 This Docker image assumes the following files exist: /input/[prefix]-[currentdate]-*.jpg
 
